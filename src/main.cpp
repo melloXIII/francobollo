@@ -73,10 +73,11 @@ void setup() {
   TJpgDec.setSwapBytes(true); 
   TJpgDec.setCallback(tft_output);
   
-  // Apriamo il video (Ricordati di rinominarlo col nome esatto del tuo file!)
-  videoFile = sd.open("/video/tuovideo.mjpeg", O_READ);
+  // Apriamo il video fisso (odissea.mjpeg)
+  videoFile = sd.open("/video/odissea.mjpeg", O_READ);
   if(!videoFile) {
      tft.println("Video mancante!");
+     tft.println("Inserisci odissea.mjpeg");
      while(1) delay(100);
   }
 }

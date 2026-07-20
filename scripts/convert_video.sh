@@ -9,7 +9,8 @@ if [ -z "$1" ]; then
 fi
 
 INPUT=$1
-OUTPUT="${INPUT%.*}.mjpeg"
+# Forziamo l'output ad essere sempre "odissea.mjpeg" per la compatibilità con il firmware
+OUTPUT="odissea.mjpeg"
 
 echo "Conversione di '$INPUT' in formato ottimizzato per RP2040..."
 # Filtro video: prima scala mantenendo le proporzioni, poi aggiunge le bande nere (letterbox) per arrivare esattamente a 160x128
