@@ -22,6 +22,7 @@ uint8_t bufferB[READ_BUFFER_SIZE];
 volatile bool useBufferA = true;
 volatile bool bufferReadyForCore1 = false;
 volatile uint32_t currentFrameSize = 0;
+volatile bool isPaused = false; // <-- Nuova variabile per la pausa
 
 // Doppio buffer per il chip hardware DMA (il decodificatore JPEG sforna quadratini di 16x16 pixel alla volta)
 uint16_t dmaBuffer1[256];
@@ -98,6 +99,38 @@ void loop() {
   uint8_t* targetBuffer = useBufferA ? bufferA : bufferB;
 
   while (videoFile.available()) {
+    // --- Lettura comandi da UART (PC) ---
+    if (Serial.available()) {
+      char cmd = Serial.read();
+      if (cmd == 'p' || cmd == 'P') {
+        isPaused = !isPaused;
+        Serial.println(isPaused ? "Video IN PAUSA" : "Video IN RIPRODUZIONE");
+      } else if (cmd == 'r' || cmd == 'R') {
+        Serial.println("Video RIAVVIATO dall'inizio");
+        videoFile.seekSet(0);
+        isPaused = false;
+        return; // Usciamo per far ripartire la logica del frame da zero
+      }
+    }
+
+    // Se è in pausa, il Core 0 si mette in attesa e ascolta la Seriale
+    while (isPaused) {
+      if (Serial.available()) {
+        char cmd = Serial.read();
+        if (cmd == 'p' || cmd == 'P') {
+          isPaused = false;
+          Serial.println("Video IN RIPRODUZIONE");
+        } else if (cmd == 'r' || cmd == 'R') {
+          Serial.println("Video RIAVVIATO dall'inizio");
+          videoFile.seekSet(0);
+          isPaused = false;
+          return;
+        }
+      }
+      delay(10); // Piccolo riposo per non stressare il processore
+    }
+    // ------------------------------------
+
     int bytesRead = videoFile.read(chunk, CHUNK_SIZE);
     
     for (int i = 0; i < bytesRead; i++) {
