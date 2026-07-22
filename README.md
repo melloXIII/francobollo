@@ -37,19 +37,19 @@ memoria: scheda SD.
 | `SD_CS` | **GP13** | Chip Select SD |
 
 ## video
-l'RP2040 non può leggere i file .mp4, ma necessita di file conveertiti in unna rapida sequenza di immagini JPEG, quindi .mjpeg.
+l'RP2040 non può leggere i file .mp4, ma necessita di file convertiti in una rapida sequenza di immagini JPEG, quindi .mjpeg.
 
-1.  **metodo per la conversione**
+1.  **metodo grafico (app)**
 
 
     Per facilitare la conversione di un video in un file .mjpeg ho deciso di sviluppare **Odissea**, ossia un app che ti permette di modificare risoluzione, qualità, proporzioni e framerate, per poi convertire il file in .mjpeg
 
     Puoi scoprire e scaricare l'app ufficiale qui: **[Scarica Odissea](https://github.com/melloXIII/odissea)**
 
-    Basterà aprire l'app, selezionare un video, settare i parametri e convertire (ti permette anche di chiamare il video convertito direttamentenel nome richiesto da questo progetto)!
+    Basterà aprire l'app, selezionare un video, settare i parametri e convertire (ti permette anche di chiamare il video convertito direttamente nel nome richiesto da questo progetto)!
     In questo modo avrai il tuo video convertito in modo semplice e veloce. 
 
-2. **metodo per la conversione**
+2. **metodo da terminale (script)**
     
     nel progetto è incluso lo script script/convert_video.sh che permette la conversione e aggiunge bande nere in modo intelligente.
     
